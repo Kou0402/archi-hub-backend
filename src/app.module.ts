@@ -1,7 +1,8 @@
 import { Module } from '@nestjs/common'
+import { ArchiShortsModule } from './domain/archi-shorts/archi-shorts.module';
 
 @Module({
-  imports: [],
+  imports: [ArchiShortsModule],
   controllers: [],
   providers: [],
 })
