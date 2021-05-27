@@ -12,6 +12,13 @@ export class ArchiShortsService {
         appScale: '中規模',
         appElements: ['React', 'Node', 'AWS', 'DynamoDB'],
       },
+      {
+        appId: 'uuid-hoge2',
+        appTitle: 'アプリタイトル2',
+        appType: 'Webアプリ',
+        appScale: '小規模',
+        appElements: ['React', 'Node', 'AWS', 'DynamoDB'],
+      },
     ]
     return tmpResults
   }
