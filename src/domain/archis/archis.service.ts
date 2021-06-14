@@ -1,11 +1,14 @@
 import { Injectable } from '@nestjs/common'
-import { CreateArchiDto } from './dto/create-archi.dto'
+import { PrismaService } from 'src/prisma.service'
 import { UpdateArchiDto } from './dto/update-archi.dto'
+import { Archi, Prisma } from '@prisma/client'
 
 @Injectable()
 export class ArchisService {
-  create(createArchiDto: CreateArchiDto) {
-    return 'This action adds a new archi'
+  constructor(private prisma: PrismaService) {}
+
+  create(data: Prisma.ArchiCreateInput): Promise<Archi> {
+    return this.prisma.archi.create({ data })
   }
 
   findAll() {
