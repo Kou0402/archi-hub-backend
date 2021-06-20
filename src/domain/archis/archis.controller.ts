@@ -2,6 +2,7 @@ import { Archi, Prisma } from '.prisma/client'
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common'
 import { ArchisService } from './archis.service'
 import { CreateArchiDto } from './dto/create-archi.dto'
+import { FindArchiResponseDto } from './dto/find-archi.dto'
 import { UpdateArchiDto } from './dto/update-archi.dto'
 
 @Controller('archis')
@@ -30,8 +31,23 @@ export class ArchisController {
   }
 
   @Get()
-  findAll() {
-    return this.archisService.findAll()
+  async findAll(): Promise<FindArchiResponseDto[]> {
+    const archis = await this.archisService.findAll()
+    return archis.map((archi) => {
+      return {
+        id: archi.id,
+        title: archi.title,
+        type: archi.type,
+        scale: archi.scale,
+        author: archi.author,
+        elements: [
+          ...archi.frontElements.map((frontElement) => frontElement.element),
+          ...archi.backElements.map((backElement) => backElement.element),
+          ...archi.infraElements.map((infraElement) => infraElement.element),
+        ],
+        updatedAt: archi.updatedAt,
+      }
+    })
   }
 
   @Get(':id')

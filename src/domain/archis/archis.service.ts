@@ -12,7 +12,31 @@ export class ArchisService {
   }
 
   findAll() {
-    return `This action returns all archis`
+    return this.prisma.archi.findMany({
+      select: {
+        id: true,
+        title: true,
+        type: true,
+        scale: true,
+        author: true,
+        frontElements: {
+          select: {
+            element: true,
+          },
+        },
+        backElements: {
+          select: {
+            element: true,
+          },
+        },
+        infraElements: {
+          select: {
+            element: true,
+          },
+        },
+        updatedAt: true,
+      },
+    })
   }
 
   findOne(appId: string) {
