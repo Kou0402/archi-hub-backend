@@ -4,6 +4,6 @@ export class FindArchiResponseDto {
   type: string
   scale: string
   author: string
-  elements?: string[]
+  elements: string[]
   updatedAt: Date
 }

@@ -1,7 +1,7 @@
 import { Archi, Prisma } from '.prisma/client'
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common'
 import { ArchisService } from './archis.service'
-import { CreateArchiDto } from './dto/create-archi.dto'
+import { CreateArchiRequestDto } from './dto/create-archi.dto'
 import { FindArchiResponseDto } from './dto/find-archi.dto'
 import { UpdateArchiDto } from './dto/update-archi.dto'
 
@@ -10,7 +10,7 @@ export class ArchisController {
   constructor(private readonly archisService: ArchisService) {}
 
   @Post()
-  create(@Body() createArchiDto: CreateArchiDto): Promise<Archi> {
+  create(@Body() createArchiDto: CreateArchiRequestDto): Promise<Archi> {
     const ArchiCreateInput: Prisma.ArchiCreateInput = {
       title: createArchiDto.title,
       type: createArchiDto.type,
@@ -18,13 +18,13 @@ export class ArchisController {
       author: createArchiDto.author,
       description: createArchiDto.description,
       frontElements: {
-        create: createArchiDto.frontElements,
+        create: this.convertStringsToElements(createArchiDto.frontElements),
       },
       backElements: {
-        create: createArchiDto.backElements,
+        create: this.convertStringsToElements(createArchiDto.backElements),
       },
       infraElements: {
-        create: createArchiDto.infraElements,
+        create: this.convertStringsToElements(createArchiDto.infraElements),
       },
     }
     return this.archisService.create(ArchiCreateInput)
@@ -63,5 +63,13 @@ export class ArchisController {
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.archisService.remove(+id)
+  }
+
+  convertStringsToElements = (strings: string[]): { element: string }[] => {
+    return strings.map((value) => {
+      return {
+        element: value,
+      }
+    })
   }
 }

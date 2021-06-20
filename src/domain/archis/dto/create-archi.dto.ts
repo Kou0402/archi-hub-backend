@@ -1,13 +1,10 @@
-export class CreateArchiDto {
+export class CreateArchiRequestDto {
   title: string
-  type: string
-  scale: string
+  type: 'Webアプリ' | 'スマホアプリ'
+  scale: '個人開発' | '小規模' | '中規模' | '大規模'
   author: string
   description?: string
-  frontElements?: ArchiElement[]
-  backElements?: ArchiElement[]
-  infraElements?: ArchiElement[]
-}
-export class ArchiElement {
-  element: string
+  frontElements?: string[]
+  backElements?: string[]
+  infraElements?: string[]
 }
