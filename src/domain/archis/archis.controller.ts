@@ -1,16 +1,15 @@
-import { Archi, Prisma } from '.prisma/client'
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common'
+import { Prisma } from '.prisma/client'
+import { Controller, Get, Post, Body, Param } from '@nestjs/common'
 import { ArchisService } from './archis.service'
-import { CreateArchiRequestDto } from './dto/create-archi.dto'
-import { FindArchiResponseDto } from './dto/find-archi.dto'
-import { UpdateArchiDto } from './dto/update-archi.dto'
+import { CreateArchiRequestDto, FindOneArchiResponseDto } from './archis.dto'
+import { FindAllArchiResponseDto } from './archis.dto'
 
 @Controller('archis')
 export class ArchisController {
   constructor(private readonly archisService: ArchisService) {}
 
   @Post()
-  create(@Body() createArchiDto: CreateArchiRequestDto): Promise<Archi> {
+  create(@Body() createArchiDto: CreateArchiRequestDto) {
     const ArchiCreateInput: Prisma.ArchiCreateInput = {
       title: createArchiDto.title,
       type: createArchiDto.type,
@@ -31,7 +30,7 @@ export class ArchisController {
   }
 
   @Get()
-  async findAll(): Promise<FindArchiResponseDto[]> {
+  async findAll(): Promise<FindAllArchiResponseDto[]> {
     const archis = await this.archisService.findAll()
     return archis.map((archi) => {
       return {
@@ -51,18 +50,8 @@ export class ArchisController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  findOne(@Param('id') id: number): FindOneArchiResponseDto {
     return this.archisService.findOne(id)
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateArchiDto: UpdateArchiDto) {
-    return this.archisService.update(+id, updateArchiDto)
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.archisService.remove(+id)
   }
 
   convertStringsToElements = (strings: string[]): { element: string }[] => {
