@@ -22,8 +22,15 @@ export class FindAllArchiResponseDto extends OmitType(CreateArchiRequestDto, [
   updatedAt: Date
 }
 
-export class FindOneArchiResponseDto extends CreateArchiRequestDto {
+export class FindOneArchiResponseDto {
   id: number
+  title: string
+  type: string
+  scale: string
+  author: string
   createdAt: Date
-  updatedAt: Date
+  description?: string
+  frontElements?: string[]
+  backElements?: string[]
+  infraElements?: string[]
 }

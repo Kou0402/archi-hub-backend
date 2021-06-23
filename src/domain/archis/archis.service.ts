@@ -39,19 +39,27 @@ export class ArchisService {
   }
 
   findOne(id: number) {
-    const tmpResults = {
-      id,
-      title: 'アプリタイトル',
-      type: 'Webアプリ',
-      scale: '中規模',
-      author: 'kou6363',
-      description: 'アーキテクチャの解説アーキテクチャの解説アーキテクチャの解説',
-      frontElements: ['React', 'Next'],
-      backElements: ['Node', 'Nest'],
-      infraElements: ['Vercel', 'Heroku'],
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    }
-    return tmpResults
+    return this.prisma.archi.findUnique({
+      include: {
+        frontElements: {
+          select: {
+            element: true,
+          },
+        },
+        backElements: {
+          select: {
+            element: true,
+          },
+        },
+        infraElements: {
+          select: {
+            element: true,
+          },
+        },
+      },
+      where: {
+        id,
+      },
+    })
   }
 }

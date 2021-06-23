@@ -50,8 +50,20 @@ export class ArchisController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: number): FindOneArchiResponseDto {
-    return this.archisService.findOne(id)
+  async findOne(@Param('id') id: string): Promise<FindOneArchiResponseDto> {
+    const archi = await this.archisService.findOne(Number(id))
+    return {
+      id: archi.id,
+      title: archi.title,
+      type: archi.type,
+      scale: archi.scale,
+      author: archi.author,
+      createdAt: archi.createdAt,
+      description: archi.description,
+      frontElements: [...archi.frontElements.map((frontElement) => frontElement.element)],
+      backElements: [...archi.backElements.map((backElement) => backElement.element)],
+      infraElements: [...archi.infraElements.map((infraElement) => infraElement.element)],
+    }
   }
 
   convertStringsToElements = (strings: string[]): { element: string }[] => {
